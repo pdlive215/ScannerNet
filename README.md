@@ -1,2 +1,2 @@
-# 3d_switchnorm
-Monocular three-dimensional object detection with switchable normalization 
+# monoRGBNet
+Monocular three-dimensional object detection using nuScenes dataset
