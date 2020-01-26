@@ -15,7 +15,7 @@ Make sure to specify blank model directory or specify resume
 Path to data: /home/donnelly_patrick_t/data/mini/data/sets/nuscenes
 
 (train_input_reader)
-database_info_path: "/home/donnelly_patrick_t/data/mini/data/sets/nuscenes/infos_train.pkl"
+database_info_path: "/home/donnelly_patrick_t/data/sets/nuscenes/infos_train.pkl"
 dataset_class_name: "v1.0-mini"
 kitti_info_path: "/home/donnelly_patrick_t/data/mini/data/sets/nuscenes/infos_train.pkl"
 kitti_root_path: "/home/donnelly_patrick_t/data/mini/data/sets/nuscenes/"
