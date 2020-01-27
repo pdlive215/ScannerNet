@@ -1,0 +1,10 @@
+fire
+matplotlib
+numba
+opencv-python
+pillow
+protobuf
+pytorch=1.0.0
+tensorboardX
+scikit-image
+scipy
