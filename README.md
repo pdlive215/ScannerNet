@@ -1,6 +1,27 @@
 # monoRGBNet
 Monocular three-dimensional object detection using nuScenes dataset
 
+System
+
+Ubuntu 16.04 / 18.04 (developed on 18.04)
+gcc (developed on 6.3.0)
+cmake >= 3.13.2 (developed on 3.16.3)
+Python (developed on 3.7.4)
+pytorch 1.0.0 (does not work on 1.4!)
+spconv (follow instructions in monoRGBNet/spconv)
+
+Requirements (pip/conda; put these in .txt file)
+
+scikit-image 
+scipy 
+numba 
+pillow 
+matplotlib
+fire 
+tensorboardX 
+protobuf 
+opencv-python
+
 Tests with default configs. Run in ~/monoRGBNet/second.pytorch/second/pytorch
 
 python train.py train --config_path=../configs/nuscenes/all.fhd.config --model_dir=model_dir/
