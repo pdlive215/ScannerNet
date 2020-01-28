@@ -3,32 +3,50 @@ Monocular three-dimensional object detection using nuScenes dataset
 
 System
 
-Ubuntu 16.04 / 18.04 (developed on 18.04)
-
-gcc (developed on 6.3.0)
-
-cmake >= 3.13.2 (developed on 3.16.3)
-
-Python (developed on 3.7.4)
-
-pytorch 1.0.0 (does not work on 1.4!)
-
-spconv (follow instructions in monoRGBNet/spconv)
+Ubuntu 16.04 / 18.04 (developed on 18.04)  
+gcc (developed on 6.3.0)  
+cmake >= 3.13.2 (developed on 3.16.3)  
+Python (developed on 3.7.4)  
+pytorch 1.0.0 (does not work on 1.4!)  
+spconv (follow instructions in monoRGBNet/spconv)  
 
 Python package requirements (see requirements.txt)
 
-scikit-image 
-scipy 
-numba 
-pillow 
-matplotlib
-fire 
-tensorboardX 
-protobuf 
+fire  
+numba  
+nuscenes-devkit  
+matplotlib  
 opencv-python
+pillow
+protobuf  
+scikit-image  
+scipy   
+tensorboardX  
 
-Tests with default configs. Run in ~/monoRGBNet/second.pytorch/second/pytorch
+Make sure to add second to PYTHONPATH:  
+export PYTHONPATH=$PYTHONPATH:ROOT/monoRGBNet/second.pytorch/
 
+Create environment variable for root directory of monoRGBNet:
+export ROOT=<root directory>
+  
+Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset:  
+maps  
+samples  
+sweeps  
+v1.0-mini  
+v1.0-trainval
+
+export DATA=<data directory>
+
+Run the following commands in $ROOT/monoRGBNet/second.pytorch/second
+
+Create dataset:
+python create_data.py nuscenes_data_prep --root_path=$DATA --version=<version> --dataset_name="NuscenesDataset" --version=<version> --max_sweeps=10
+  
+This creates a ground truth database at $DATA/gt_database  
+You can also create a ground truth database with velocity by specifying --dataset_name="NuscenesDatasetVelo"
+
+Train:  
 python train.py train --config_path=../configs/nuscenes(/mini)/all.fhd.config --model_dir=model_dir/
 
 Notes:
