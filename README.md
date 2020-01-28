@@ -4,13 +4,18 @@ Monocular three-dimensional object detection using nuScenes dataset
 System
 
 Ubuntu 16.04 / 18.04 (developed on 18.04)
+
 gcc (developed on 6.3.0)
+
 cmake >= 3.13.2 (developed on 3.16.3)
+
 Python (developed on 3.7.4)
+
 pytorch 1.0.0 (does not work on 1.4!)
+
 spconv (follow instructions in monoRGBNet/spconv)
 
-Requirements (pip/conda; put these in .txt file)
+Python package requirements (see requirements.txt)
 
 scikit-image 
 scipy 
@@ -90,3 +95,5 @@ try dataset_name="NuScenesDataset"
 
 python create_data.py nuscenes_data_prep --root_path=/home/donnelly_patrick_t/data/sets/nuscenes/ --
 version="v1.0-mini" --dataset_name="NuScenesDataset"
+
+
