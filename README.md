@@ -23,24 +23,24 @@ scikit-image
 scipy   
 tensorboardX  
 
+Create environment variable for root directory of monoRGBNet:  
+export ROOT=$$root directory$$
+
 Make sure to add second to PYTHONPATH:  
 export PYTHONPATH=$PYTHONPATH:ROOT/monoRGBNet/second.pytorch/
-
-Create environment variable for root directory of monoRGBNet:
-export ROOT=<root directory>
   
-Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset:  
+## Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset:  
 maps  
 samples  
 sweeps  
 v1.0-mini  
 v1.0-trainval
 
-export DATA=<data directory>
+export DATA=$$data directory$$
 
-Run the following commands in $ROOT/monoRGBNet/second.pytorch/second
+Run the following commands in $ROOT/monoRGBNet/second.pytorch/second:
 
-Create dataset:
+Create dataset:  
 python create_data.py nuscenes_data_prep --root_path=$DATA --version=<version> --dataset_name="NuscenesDataset" --version=<version> --max_sweeps=10
   
 This creates a ground truth database at $DATA/gt_database  
@@ -51,8 +51,7 @@ python train.py train --config_path=../configs/nuscenes(/mini)/all.fhd.config --
 
 Notes:
 
-Make sure to add second to PYTHONPATH:
-export PYTHONPATH="/home/donnelly_patrick_t/monoRGBNet/second.pytorch/"
+
 
 Make sure to specify blank model directory or specify resume
 
