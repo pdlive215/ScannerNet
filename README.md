@@ -43,7 +43,7 @@ v1.0-trainval
 
 export DATA=$$data directory$$
 
-Run the following commands in $$root directory$$/monoRGBNet/second.pytorch/second:
+#### Run the following commands in $$root directory$$/monoRGBNet/second.pytorch/second:
 
 Create dataset:  
 python create_data.py nuscenes_data_prep --root_path=$DATA --version=<version> --dataset_name="NuscenesDataset" --version=<version> --max_sweeps=10
