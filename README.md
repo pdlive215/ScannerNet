@@ -1,35 +1,40 @@
 # monoRGBNet
 Monocular three-dimensional object detection using nuScenes dataset
 
-System
+#### System
 
 Ubuntu 16.04 / 18.04 (developed on 18.04)  
 gcc (developed on 6.3.0)  
 cmake >= 3.13.2 (developed on 3.16.3)  
-Python (developed on 3.7.4)  
-pytorch 1.0.0 (does not work on 1.4!)  
-spconv (follow instructions in monoRGBNet/spconv)  
+Python 3.6 or 3.7 (developed on 3.7.4)  
+spconv (follow instructions in monoRGBNet/spconv)
+libbz2-dev
 
-Python package requirements (see requirements.txt)
-
-fire  
-numba  
-nuscenes-devkit  
-matplotlib  
-opencv-python
-pillow
-protobuf  
-scikit-image  
-scipy   
-tensorboardX  
-
-Create environment variable for root directory of monoRGBNet:  
-export ROOT=$$root directory$$
+Clone repository:  
+git clone --recursive https://github.com/pdlive215/monoRGBNet/
 
 Make sure to add second to PYTHONPATH:  
-export PYTHONPATH=$PYTHONPATH:ROOT/monoRGBNet/second.pytorch/
-  
-## Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset:  
+export PYTHONPATH=$PYTHONPATH:$$root directory$$/monoRGBNet/second.pytorch
+
+#### Python package requirements (see requirements.txt)
+
+fire==0.2.1  
+numba==0.47.0  
+nuscenes-devkit  
+matplotlib==3.1.2  
+opencv-python==4.1.2
+pillow==6.2.2
+protobuf==3.11.2
+psutil==5.6.7
+scikit-image==0.16.2  
+scipy==1.4.1  
+seaborn==0.10.0  
+tensorboardX==2.0
+torch==1.0.0
+torchvision==0.2.1
+
+#### Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset  
+
 maps  
 samples  
 sweeps  
@@ -47,7 +52,8 @@ This creates a ground truth database at $DATA/gt_database
 You can also create a ground truth database with velocity by specifying --dataset_name="NuscenesDatasetVelo"
 
 Train:  
-python train.py train --config_path=../configs/nuscenes(/mini)/all.fhd.config --model_dir=model_dir/
+python train.py train --config_path=../configs/nuscenes/$$config file$$--model_dir=$$model directory$$
+
 
 Notes:
 
