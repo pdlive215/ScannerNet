@@ -1,5 +1,5 @@
 # ScannerNet
-LIDAR object detection using nuScenes dataset
+LIDAR object detection using nuScenes dataset based on SECOND implementation of VoxelNet (https://github.com/traveller59/second.pytorch/)
 
 #### System
 
@@ -11,10 +11,10 @@ spconv (follow instructions in monoRGBNet/spconv)
 libbz2-dev
 
 Clone repository:  
-git clone --recursive https://github.com/pdlive215/monoRGBNet/
+git clone --recursive https://github.com/pdlive215/ScannerNet/
 
 Make sure to add second to PYTHONPATH:  
-export PYTHONPATH=$PYTHONPATH:$$root directory$$/monoRGBNet/second.pytorch
+export PYTHONPATH=$PYTHONPATH:$$root directory$$/ScannerNet/second.pytorch
 
 #### Python package requirements (see requirements.txt)
 
@@ -32,18 +32,19 @@ seaborn==0.10.0
 tensorboardX==2.0
 torch==1.0.0
 torchvision==0.2.1
+wheel==0.29.0
 
 #### Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset  
 
-maps  
-samples  
-sweeps  
-v1.0-mini  
-v1.0-trainval
+maps/  
+samples/  
+sweeps/  
+v1.0-mini/  
+v1.0-trainval/
 
 export DATA=$$data directory$$
 
-#### Run the following commands in $$root directory$$/monoRGBNet/second.pytorch/second:
+#### Run the following commands in $$root directory$$/ScannerNet/second.pytorch/second
 
 Create dataset:  
 python create_data.py nuscenes_data_prep --root_path=$DATA --version=<version> --dataset_name="NuscenesDataset" --version=<version> --max_sweeps=10
