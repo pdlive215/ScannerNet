@@ -6,7 +6,7 @@ from second.utils import config_tool
 
 
 def train_multi_rpn_layer_num():
-    config_path = "./configs/car.lite.config"
+    config_path = "./configs/nuscenes/mini/all.fhd.config"
     model_root = Path.home() / "second_test"  # don't forget to change this.
     config = pipeline_pb2.TrainEvalPipelineConfig()
     with open(config_path, "r") as f:
@@ -22,9 +22,9 @@ def train_multi_rpn_layer_num():
 
 
 def eval_multi_threshold():
-    config_path = "./configs/car.fhd.config"
-    ckpt_name = "/path/to/your/model_ckpt" # don't forget to change this.
-    assert "/path/to/your" not in ckpt_name
+    config_path = "./configs/nuscenes/mini/all.fhd.config"
+    ckpt_name = "./pytorch/model_dir/model_ckpt" # don't forget to change this.
+    assert "./pytorch/model_dir/" not in ckpt_name
     config = pipeline_pb2.TrainEvalPipelineConfig()
     with open(config_path, "r") as f:
         proto_str = f.read()

@@ -2,38 +2,31 @@ model: {
   second: {
     network_class_name: "VoxelNet"
     voxel_generator {
-      full_empty_part_with_mean: false
-      point_cloud_range : [-49.6, -49.6, -5, 49.6, 49.6, 3]
-      voxel_size : [0.05, 0.05, 0.2]
-      max_number_of_points_per_voxel : 1
-      block_filtering: true # filter voxels by block height
-      block_factor: 1 # height calc width: voxel_size * block_factor * block_size= (0.05 * 1 * 8) 
-      block_size: 8
-      height_threshold: 0.2 # locations with height < height_threshold will be removed.
+      point_cloud_range : [-50, -50, -10, 50, 50, 10]
+      voxel_size : [0.25, 0.25, 20]
+      max_number_of_points_per_voxel : 60
     }
     voxel_feature_extractor: {
-      module_class_name: "SimpleVoxel"
-      num_filters: [16]
+      module_class_name: "PillarFeatureNet"
+      num_filters: [64]
       with_distance: false
       num_input_features: 4
     }
     middle_feature_extractor: {
-      module_class_name: "SpMiddleFHD"
-      # num_filters_down1: [] # protobuf don't support empty list.
-      # num_filters_down2: []
-      downsample_factor: 8
-      num_input_features: 4
+      module_class_name: "PointPillarsScatter"
+      downsample_factor: 1
+      num_input_features: 64
     }
     rpn: {
       module_class_name: "RPNV2"
-      layer_nums: [5]
-      layer_strides: [1]
-      num_filters: [128]
-      upsample_strides: [0.5] # will generate ~300k anchors.
-      num_upsample_filters: [128]
+      layer_nums: [3, 5, 5]
+      layer_strides: [2, 2, 2]
+      num_filters: [64, 128, 256]
+      upsample_strides: [0.25, 0.5, 1]
+      num_upsample_filters: [128, 128, 128]
       use_groupnorm: false
       num_groups: 32
-      num_input_features: 128
+      num_input_features: 64
     }
     loss: {
       classification_loss: {
@@ -61,7 +54,7 @@ model: {
 
     use_direction_classifier: true
     direction_loss_weight: 0.2
-    num_direction_bins: 2 # don't use other number.
+    num_direction_bins: 2
     direction_limit_offset: 0
     direction_offset: 0.78
 
@@ -72,7 +65,6 @@ model: {
     loss_norm_type: NormByNumPositives
     # Postprocess
     post_center_limit_range: [-59.6, -59.6, -10, 59.6, 59.6, 10]
-
     nms_class_agnostic: false # only valid in multi-class nms
     box_coder: {
       ground_box3d_coder: {
@@ -85,12 +77,12 @@ model: {
         class_name: "car"
         anchor_generator_range: {
           sizes: [1.95017717, 4.60718145, 1.72270761] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.93897414, 49.6, 49.6, -0.93897414]
+          anchor_ranges: [-50, -50, -0.93897414, 50, 50, -0.93897414]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
-        matched_threshold : 0.4
-        unmatched_threshold : 0.3
+        matched_threshold : 0.25
+        unmatched_threshold : 0.2
         use_rotate_nms: false
         use_multi_class_nms: false
         nms_pre_max_size: 1000
@@ -105,7 +97,7 @@ model: {
         class_name: "bicycle"
         anchor_generator_range: {
           sizes: [0.60058911, 1.68452161, 1.27192197] # wlh
-          anchor_ranges: [-49.6, -49.6, -1.03743013, 49.6, 49.6, -1.03743013]
+          anchor_ranges: [-50, -50, -1.03743013, 50, 50, -1.03743013]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -125,7 +117,7 @@ model: {
         class_name: "bus"
         anchor_generator_range: {
           sizes: [2.94046906, 11.1885991, 3.47030982] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.0715754, 49.6, 49.6, -0.0715754]
+          anchor_ranges: [-50, -50, -0.0715754, 50, 50, -0.0715754]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -145,7 +137,7 @@ model: {
         class_name: "construction_vehicle"
         anchor_generator_range: {
           sizes: [2.73050468, 6.38352896, 3.13312415] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.08168083, 49.6, 49.6, -0.08168083]
+          anchor_ranges: [-50, -50, -0.08168083, 50, 50, -0.08168083]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -165,7 +157,7 @@ model: {
         class_name: "motorcycle"
         anchor_generator_range: {
           sizes: [0.76279481, 2.09973778, 1.44403034] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.99194854, 49.6, 49.6, -0.99194854]
+          anchor_ranges: [-50, -50, -0.99194854, 50, 50, -0.99194854]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -185,7 +177,7 @@ model: {
         class_name: "pedestrian"
         anchor_generator_range: {
           sizes: [0.66344886, 0.7256437, 1.75748069] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.73911038, 49.6, 49.6, -0.73911038]
+          anchor_ranges: [-50, -50, -0.73911038, 50, 50, -0.73911038]
           rotations: [0] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -209,7 +201,7 @@ model: {
         class_name: "traffic_cone"
         anchor_generator_range: {
           sizes: [0.39694519, 0.40359262, 1.06232151] # wlh
-          anchor_ranges: [-49.6, -49.6, -1.27868911, 49.6, 49.6, -1.27868911]
+          anchor_ranges: [-50, -50, -1.27868911, 50, 50, -1.27868911]
           rotations: [0] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -234,7 +226,7 @@ model: {
         anchor_generator_range: {
           # sizes: [2.87427237, 12.01320693, 3.81509561] # wlh
           sizes: [3, 15, 3.8, 2, 3, 3.8]
-          anchor_ranges: [-49.6, -49.6, 0.22228277, 49.6, 49.6, 0.22228277]
+          anchor_ranges: [-50, -50, 0.22228277, 50, 50, 0.22228277]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -254,7 +246,7 @@ model: {
         class_name: "truck"
         anchor_generator_range: {
           sizes: [2.4560939, 6.73778078, 2.73004906] # wlh
-          anchor_ranges: [-49.6, -49.6, -0.37937912, 49.6, 49.6, -0.37937912]
+          anchor_ranges: [-50, -50, -0.37937912, 50, 50, -0.37937912]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -274,7 +266,7 @@ model: {
         class_name: "barrier"
         anchor_generator_range: {
           sizes: [2.49008838, 0.48578221, 0.98297065] # wlh
-          anchor_ranges: [-49.6, -49.6, -1.27247968, 49.6, 49.6, -1.27247968]
+          anchor_ranges: [-50, -50, -1.27247968, 50, 50, -1.27247968]
           rotations: [0, 1.57] # DON'T modify this unless you are very familiar with my code.
           # custom_values: [0, 0] # velocity vector base value
         }
@@ -299,14 +291,14 @@ model: {
 
 train_input_reader: {
   dataset: {
-    dataset_class_name: "NuScenesDatasetD2"
+    dataset_class_name: "NuScenesDataset"
     kitti_info_path: "/home/donnelly_patrick_t/data/sets/nuscenes/infos_train.pkl"
     kitti_root_path: "/home/donnelly_patrick_t/data/sets/nuscenes/"
   }
   
   batch_size: 3
   preprocess: {
-    max_number_of_voxels: 80000
+    max_number_of_voxels: 25000
     shuffle_points: false
     num_workers: 3
     groundtruth_localization_noise_std: [0, 0, 0]
@@ -314,9 +306,9 @@ train_input_reader: {
     # groundtruth_localization_noise_std: [0.25, 0.25, 0.25]
     # groundtruth_rotation_uniform_noise: [-0.15707963267, 0.15707963267]
     global_rotation_uniform_noise: [0, 0]
-    global_scaling_uniform_noise: [1.0, 1.0]
+    global_scaling_uniform_noise: [0.95, 1.05]
     global_random_rotation_range_per_object: [0, 0]
-    global_translate_noise_std: [0, 0, 0]
+    global_translate_noise_std: [0.2, 0.2, 0.2]
     anchor_area_threshold: -1
     remove_points_after_sample: true
     groundtruth_points_drop_percentage: 0.0
@@ -368,8 +360,8 @@ train_config: {
     fixed_weight_decay: true
     use_moving_average: false
   }
-  steps: 58650 # 14065 * 20 (28130 // 2 )
-  steps_per_eval: 5865 # 14065 * 2
+  steps: 140670 # 14065 * 20 (28130 // 2 )
+  steps_per_eval: 23445 # 14065 * 2
   save_checkpoints_secs : 1800 # half hour
   save_summary_steps : 10
   enable_mixed_precision: false
@@ -384,11 +376,26 @@ eval_input_reader: {
     kitti_root_path: "/home/donnelly_patrick_t/data/sets/nuscenes/"
   }
   batch_size: 1
+  
   preprocess: {
-    max_number_of_voxels: 90000
+    max_number_of_voxels: 30000
     shuffle_points: false
     num_workers: 2
     anchor_area_threshold: -1
     remove_environment: false
   }
 }
+
+
+runtime.step=50, runtime.steptime=1.094, runtime.voxel_gene_time=0.03587, runtime.prep_time=0.1707, loss.cls_loss=475.1, loss.cls_loss_rt=60.39, loss.loc_loss=2.985, loss.loc_loss_rt=2.212, loss.loc_elem=[0.0972, 0.1047, 0.3486, 0.04779, 0.06747, 0.06022, 0.3803], loss.cls_pos_rt=54.76, loss.cls_neg_rt=5.624, loss.dir_rt=0.6981, rpn_acc=0.7612, pr.prec@10=0.001285, pr.rec@10=1.0, pr.prec@30=0.001326, pr.rec@30=0.8319, pr.prec@50=0.001242, pr.rec@50=0.23, pr.prec@70=0.001408, pr.rec@70=0.002077, pr.prec@80=0.0004488, pr.rec@80=0.0001038, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=61441, misc.num_pos=58, misc.num_neg=49902, misc.num_anchors=50000, misc.lr=0.0003, misc.mem_usage=11.0
+runtime.step=100, runtime.steptime=0.9076, runtime.voxel_gene_time=0.0171, runtime.prep_time=0.1569, loss.cls_loss=246.3, loss.cls_loss_rt=1.602, loss.loc_loss=2.796, loss.loc_loss_rt=2.399, loss.loc_elem=[0.1465, 0.1549, 0.3249, 0.05825, 0.05438, 0.04853, 0.412], loss.cls_pos_rt=1.259, loss.cls_neg_rt=0.3427, loss.dir_rt=0.6904, rpn_acc=0.8799, pr.prec@10=0.00138, pr.rec@10=0.8799, pr.prec@30=0.001325, pr.rec@30=0.4107, pr.prec@50=0.001242, pr.rec@50=0.1134, pr.prec@70=0.001408, pr.rec@70=0.001024, pr.prec@80=0.0004488, pr.rec@80=5.121e-05, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=51478, misc.num_pos=63, misc.num_neg=49918, misc.num_anchors=50000, misc.lr=0.0003, misc.mem_usage=11.4
+runtime.step=150, runtime.steptime=1.052, runtime.voxel_gene_time=0.02901, runtime.prep_time=0.1406, loss.cls_loss=1.02, loss.cls_loss_rt=0.8877, loss.loc_loss=2.483, loss.loc_loss_rt=2.444, loss.loc_elem=[0.1438, 0.1461, 0.3787, 0.05043, 0.07111, 0.07096, 0.3609], loss.cls_pos_rt=0.5806, loss.cls_neg_rt=0.3071, loss.dir_rt=0.6687, rpn_acc=0.9987, pr.prec@10=0.01923, pr.rec@10=0.4311, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=48830, misc.num_pos=57, misc.num_neg=49910, misc.num_anchors=50000, misc.lr=0.0003, misc.mem_usage=11.8
+runtime.step=200, runtime.steptime=0.8951, runtime.voxel_gene_time=0.03258, runtime.prep_time=0.2011, loss.cls_loss=0.8889, loss.cls_loss_rt=0.6558, loss.loc_loss=2.465, loss.loc_loss_rt=2.731, loss.loc_elem=[0.2035, 0.1914, 0.3218, 0.05716, 0.07191, 0.05946, 0.4604], loss.cls_pos_rt=0.3919, loss.cls_neg_rt=0.2639, loss.dir_rt=0.7091, rpn_acc=0.9987, pr.prec@10=0.01765, pr.rec@10=0.4586, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=64277, misc.num_pos=95, misc.num_neg=49871, misc.num_anchors=50000, misc.lr=0.0003001, misc.mem_usage=12.1
+runtime.step=250, runtime.steptime=1.104, runtime.voxel_gene_time=0.03454, runtime.prep_time=0.1524, loss.cls_loss=0.7175, loss.cls_loss_rt=0.6829, loss.loc_loss=2.402, loss.loc_loss_rt=2.31, loss.loc_elem=[0.158, 0.1648, 0.3123, 0.04673, 0.06447, 0.04726, 0.3614], loss.cls_pos_rt=0.4433, loss.cls_neg_rt=0.2396, loss.dir_rt=0.6962, rpn_acc=0.9988, pr.prec@10=0.01765, pr.rec@10=0.4867, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=50570, misc.num_pos=87, misc.num_neg=49886, misc.num_anchors=50000, misc.lr=0.0003001, misc.mem_usage=11.6
+runtime.step=300, runtime.steptime=0.8792, runtime.voxel_gene_time=0.02815, runtime.prep_time=0.1369, loss.cls_loss=0.6946, loss.cls_loss_rt=0.6453, loss.loc_loss=2.41, loss.loc_loss_rt=2.36, loss.loc_elem=[0.1183, 0.1156, 0.3557, 0.06284, 0.06873, 0.06696, 0.3921], loss.cls_pos_rt=0.3429, loss.cls_neg_rt=0.3024, loss.dir_rt=0.7041, rpn_acc=0.9987, pr.prec@10=0.01891, pr.rec@10=0.5024, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=29186, misc.num_pos=143, misc.num_neg=49806, misc.num_anchors=50000, misc.lr=0.0003002, misc.mem_usage=11.4
+runtime.step=350, runtime.steptime=1.119, runtime.voxel_gene_time=0.03316, runtime.prep_time=0.1991, loss.cls_loss=0.6872, loss.cls_loss_rt=0.7267, loss.loc_loss=2.372, loss.loc_loss_rt=2.177, loss.loc_elem=[0.1237, 0.1233, 0.2663, 0.06168, 0.04733, 0.03682, 0.4293], loss.cls_pos_rt=0.4204, loss.cls_neg_rt=0.3064, loss.dir_rt=0.6878, rpn_acc=0.9987, pr.prec@10=0.01674, pr.rec@10=0.3789, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=44487, misc.num_pos=35, misc.num_neg=49946, misc.num_anchors=50000, misc.lr=0.0003003, misc.mem_usage=11.4
+runtime.step=400, runtime.steptime=0.879, runtime.voxel_gene_time=0.04178, runtime.prep_time=0.1718, loss.cls_loss=0.6631, loss.cls_loss_rt=0.7145, loss.loc_loss=2.381, loss.loc_loss_rt=1.77, loss.loc_elem=[0.03865, 0.09643, 0.2663, 0.05522, 0.05959, 0.04322, 0.3256], loss.cls_pos_rt=0.3586, loss.cls_neg_rt=0.3559, loss.dir_rt=0.7189, rpn_acc=0.9987, pr.prec@10=0.01763, pr.rec@10=0.4693, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=62331, misc.num_pos=46, misc.num_neg=49932, misc.num_anchors=50000, misc.lr=0.0003003, misc.mem_usage=12.2
+runtime.step=450, runtime.steptime=1.067, runtime.voxel_gene_time=0.03023, runtime.prep_time=0.1396, loss.cls_loss=0.6432, loss.cls_loss_rt=0.5772, loss.loc_loss=2.32, loss.loc_loss_rt=2.412, loss.loc_elem=[0.1647, 0.1525, 0.2664, 0.04574, 0.06318, 0.07273, 0.4407], loss.cls_pos_rt=0.2646, loss.cls_neg_rt=0.3126, loss.dir_rt=0.6957, rpn_acc=0.9988, pr.prec@10=0.01601, pr.rec@10=0.4568, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=53265, misc.num_pos=94, misc.num_neg=49868, misc.num_anchors=50000, misc.lr=0.0003004, misc.mem_usage=11.6
+runtime.step=500, runtime.steptime=0.9029, runtime.voxel_gene_time=0.03076, runtime.prep_time=0.1402, loss.cls_loss=0.6353, loss.cls_loss_rt=0.5304, loss.loc_loss=2.251, loss.loc_loss_rt=1.914, loss.loc_elem=[0.09654, 0.1001, 0.2545, 0.0331, 0.04357, 0.06783, 0.3615], loss.cls_pos_rt=0.2129, loss.cls_neg_rt=0.3174, loss.dir_rt=0.7005, rpn_acc=0.9987, pr.prec@10=0.01748, pr.rec@10=0.4928, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=49764, misc.num_pos=159, misc.num_neg=49780, misc.num_anchors=50000, misc.lr=0.0003005, misc.mem_usage=11.5
+runtime.step=550, runtime.steptime=1.083, runtime.voxel_gene_time=0.03132, runtime.prep_time=0.1293, loss.cls_loss=0.6173, loss.cls_loss_rt=0.5951, loss.loc_loss=2.182, loss.loc_loss_rt=2.042, loss.loc_elem=[0.09763, 0.1071, 0.2427, 0.05122, 0.04224, 0.06093, 0.419], loss.cls_pos_rt=0.2247, loss.cls_neg_rt=0.3704, loss.dir_rt=0.6795, rpn_acc=0.9987, pr.prec@10=0.01879, pr.rec@10=0.4812, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=43985, misc.num_pos=135, misc.num_neg=49809, misc.num_anchors=50000, misc.lr=0.0003006, misc.mem_usage=11.6
+runtime.step=600, runtime.steptime=0.9004, runtime.voxel_gene_time=0.04287, runtime.prep_time=0.2237, loss.cls_loss=0.617, loss.cls_loss_rt=0.6381, loss.loc_loss=2.148, loss.loc_loss_rt=2.379, loss.loc_elem=[0.2017, 0.1759, 0.2577, 0.06876, 0.07125, 0.04691, 0.3672], loss.cls_pos_rt=0.4371, loss.cls_neg_rt=0.201, loss.dir_rt=0.6975, rpn_acc=0.9987, pr.prec@10=0.01811, pr.rec@10=0.5172, pr.prec@30=0.0, pr.rec@30=0.0, pr.prec@50=0.0, pr.rec@50=0.0, pr.prec@70=0.0, pr.rec@70=0.0, pr.prec@80=0.0, pr.rec@80=0.0, pr.prec@90=0.0, pr.rec@90=0.0, pr.prec@95=0.0, pr.rec@95=0.0, misc.num_vox=43529, misc.num_pos=80, misc.num_neg=49902, misc.num_anchors=50000, misc.lr=0.0003008, misc.mem_usage=11.6
