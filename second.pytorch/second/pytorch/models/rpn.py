@@ -9,6 +9,8 @@ from torchvision.models import resnet
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
 
+from second.Switchable-Normalization.devkit.ops import switchable_norm
+
 REGISTERED_RPN_CLASSES = {}
 
 def register_rpn(cls, name=None):
