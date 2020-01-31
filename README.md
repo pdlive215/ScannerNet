@@ -20,7 +20,7 @@ export PYTHONPATH=$PYTHONPATH:$$root directory$$/ScannerNet/second.pytorch
 
 fire==0.2.1  
 numba==0.47.0  
-nuscenes-devkit  
+nuscenes-devkit=1.0.1  
 matplotlib==3.1.2  
 opencv-python==4.1.2  
 pillow==6.2.2  
