@@ -22,16 +22,16 @@ fire==0.2.1
 numba==0.47.0  
 nuscenes-devkit  
 matplotlib==3.1.2  
-opencv-python==4.1.2
-pillow==6.2.2
-protobuf==3.11.2
-psutil==5.6.7
+opencv-python==4.1.2  
+pillow==6.2.2  
+protobuf==3.11.2  
+psutil==5.6.7  
 scikit-image==0.16.2  
 scipy==1.4.1  
 seaborn==0.10.0  
-tensorboardX==2.0
-torch==1.0.0
-torchvision==0.2.1
+tensorboardX==2.0  
+torch==1.0.0  
+torchvision==0.2.1  
 wheel==0.29.0
 
 #### Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset  

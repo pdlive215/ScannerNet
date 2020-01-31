@@ -1,0 +1,39 @@
+Performance tests
+
+Train v1.0-mini (to identify network config performance very early in training)
+
+config (steps)        cls_loss  loc_loss   prec@10   rec@10    prec@30   rec@30  
+all.fhd (500)          .9244    1.759      .02969    .1225     0         0
+all.fhd (1000)         .6464    1.408      .02672    .3605      .4706     .0004476
+all.pp.largea (500)    .667     1.862      .03673    .3816     1.0        .002385
+all.pp.largea (1000)   .5564    1.571      .04477    .5199      .8042     .0746
+all.pp.lowa (500)      .6353    2.251      .01748    .4928     0         0
+all.pp.lowa (1000)     .5631    1.904      .02169    .5931     0         0
+all.pp.mhead (500)    3.589     1.869      .001274   .07031    0         0
+all.pp.mhead (1000)    .691     1.187      .02518    .3577      .5137     .02206
+all.pp.mida (500)      .5971    1.55       .02398    .581      0         0
+all.pp.mida (1000)     .4916    1.333      .036      .6737      .3777     .07718
+all.pp.mida (1500)     .4578    1.299      .03389    .6861      .317      .1551            
+all.pp.mida (5850)     .2288     .5258     .1044     .8896      .6591     .6024 
+
+Train v1.0-mini starting with pretrained VoxelNet model
+
+config (steps)        prec@10   rec@10    prec@30   rec@30
+all.fhd (500)          .02591   .08893    0         0
+all.fhd (1000)         .02319   .286       .5       6.038e-05
+all.pp.largea (500)    .03486   .3485     0         0
+all.pp.largea (1000)   .04074   .5542      .8115     .06498
+all.pp.lowa (500)      .0316    .03335     .8909     .003144
+all.pp.lowa (1500)     .04367   .6351      .6058     .1493                                   
+all.pp.mhead (500)     .002351  .03912    0         0
+all.pp.mhead (1000)    .02293   .2816     0         0
+all.pp.mida (500)      .02405   .6222     0         0
+all.pp.mida (1000)     .04046   .6779      .4319     .09371
+all.pp.mida (5850)     .0991    .8886      .6533     .5872
+
+Train v1.0-mini starting with pretrained VoxelNet model and switchnorm
+
+config (steps)        prec@10   rec@10    prec@30   rec@30    %prec@10  %rec@10 %prec@30  %rec@30
+all.pp.mida (500)      .02507   .6201     0         0          4.24     -0.34    0         0       
+all.pp.mida (1000)     .04102   .6938     .4192     .07967     1.38      2.35   -4.40     -14.98
+all.pp.mida (5850)     .1066    .8908     .6644     .6009      7.57      0.23    1.70      2.33
