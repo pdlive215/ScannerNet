@@ -9,7 +9,7 @@ from torchvision.models import resnet
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
 
-from second.Switchable-Normalization.devkit.ops import switchable_norm
+from second.switchnorm.devkit.ops import switchable_norm
 
 REGISTERED_RPN_CLASSES = {}
 
@@ -40,6 +40,7 @@ class RPN(nn.Module):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
+                 use_switchnorm=False,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -66,7 +67,11 @@ class RPN(nn.Module):
                 np.prod(layer_strides[:i + 1]) // upsample_strides[i])
         assert all([x == factors[0] for x in factors])
         if use_norm:
-            if use_groupnorm:
+            
+            if use_switchnorm:
+                BatchNorm2d = SwitchNorm2d
+
+            elif use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=num_groups, eps=1e-3)(GroupNorm)
             else:
