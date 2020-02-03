@@ -31,9 +31,9 @@ all.pp.mida (500)      .02405   .6222     0         0
 all.pp.mida (1000)     .04046   .6779      .4319     .09371
 all.pp.mida (5850)     .0991    .8886      .6533     .5872
 
-Train v1.0-mini starting with pretrained VoxelNet model and (for RPN) switchnorm
+Train v1.0-mini starting with pretrained VoxelNet model and switchnorm
 
 config (steps)        prec@10   rec@10    prec@30   rec@30
-all.pp.mida (500)      .02141   .5968     0         0
-all.pp.mida (1000)     .04008   .7028     .4648     .1002
-all.pp.mida (1500)     .04634   .6723     .6126     .09063
+all.pp.mida (500)     .02332    .6192     0         0
+all.pp.mida (1000)    .04204    .7151     .4023     .1027    
+all.pp.mida (1500)    .06051    .8511     .5781     .2634
