@@ -8,6 +8,8 @@ from torch.nn import functional as F
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
 
+from second.switchnorm.devkit.ops import switchable_norm
+
 REGISTERED_VFE_CLASSES = {}
 
 def register_vfe(cls, name=None):
@@ -48,10 +50,15 @@ def get_paddings_indicator(actual_num, max_num, axis=0):
     return paddings_indicator
 
 class VFELayer(nn.Module):
-    def __init__(self, in_channels, out_channels, use_norm=True, name='vfe'):
+    def __init__(self, in_channels, out_channels, use_norm=True,
+            use_switchnorm=True, name='vfe'):
         super(VFELayer, self).__init__()
         self.name = name
         self.units = int(out_channels / 2)
+
+        if use_switchnorm:
+            BatchNorm1d = SwitchNorm1d
+
         if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)

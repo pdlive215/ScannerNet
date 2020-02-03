@@ -40,7 +40,7 @@ class RPN(nn.Module):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
-                 use_switchnorm=False,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
