@@ -1,7 +1,7 @@
 fire
 matplotlib
 numba
-nuscenes-devkit
+nuscenes-devkit=1.0.1
 opencv-python
 pillow
 protobuf
