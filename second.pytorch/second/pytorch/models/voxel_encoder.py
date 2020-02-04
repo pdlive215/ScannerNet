@@ -8,7 +8,7 @@ from torch.nn import functional as F
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
 
-from second.switchnorm.devkit.ops import switchable_norm
+from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm1d
 
 REGISTERED_VFE_CLASSES = {}
 
@@ -55,11 +55,9 @@ class VFELayer(nn.Module):
         super(VFELayer, self).__init__()
         self.name = name
         self.units = int(out_channels / 2)
-
         if use_switchnorm:
             BatchNorm1d = SwitchNorm1d
-
-        if use_norm:
+        elif use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
@@ -91,6 +89,7 @@ class VoxelFeatureExtractor(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -98,7 +97,9 @@ class VoxelFeatureExtractor(nn.Module):
                  name='VoxelFeatureExtractor'):
         super(VoxelFeatureExtractor, self).__init__()
         self.name = name
-        if use_norm:
+        if use_switchnorm:
+            BatchNorm1d = SwitchNorm1d
+        elif use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
@@ -153,6 +154,7 @@ class VoxelFeatureExtractorV2(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -160,7 +162,9 @@ class VoxelFeatureExtractorV2(nn.Module):
                  name='VoxelFeatureExtractor'):
         super(VoxelFeatureExtractorV2, self).__init__()
         self.name = name
-        if use_norm:
+        if use_switchnorm:
+            BatchNorm1d = SwitchNorm1d
+        elif use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
@@ -215,6 +219,7 @@ class SimpleVoxel(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -239,6 +244,7 @@ class SimpleVoxelRadius(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=(32, 128),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -260,3 +266,4 @@ class SimpleVoxelRadius(nn.Module):
         res = torch.cat([feature, points_mean[:, 2:self.num_input_features]],
                         dim=1)
         return res
+

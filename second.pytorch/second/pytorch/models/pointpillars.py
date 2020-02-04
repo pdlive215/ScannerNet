@@ -14,11 +14,14 @@ from torchplus.nn import Empty
 from torchplus.tools import change_default_args
 import numpy as np 
 
+from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm1d
+
 class PFNLayer(nn.Module):
     def __init__(self,
                  in_channels,
                  out_channels,
                  use_norm=True,
+                 use_switchnorm=True,
                  last_layer=False):
         """
         Pillar Feature Net Layer.
@@ -36,6 +39,9 @@ class PFNLayer(nn.Module):
         if not self.last_vfe:
             out_channels = out_channels // 2
         self.units = out_channels
+        
+        if use_switchnorm:
+            BatchNorm1d = SwitchNorm1d
 
         if use_norm:
             BatchNorm1d = change_default_args(
@@ -69,6 +75,7 @@ class PillarFeatureNetOld(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -155,6 +162,7 @@ class PillarFeatureNet(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -241,6 +249,7 @@ class PillarFeatureNetRadius(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -329,6 +338,7 @@ class PillarFeatureNetRadiusHeight(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -422,6 +432,7 @@ class PointPillarsScatter(nn.Module):
     def __init__(self,
                  output_shape,
                  use_norm=True,
+                 use_switchnorm=True,
                  num_input_features=64,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],

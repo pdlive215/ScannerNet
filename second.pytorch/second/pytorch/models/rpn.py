@@ -9,7 +9,7 @@ from torchvision.models import resnet
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
 
-from second.switchnorm.devkit.ops import switchable_norm
+from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm2d
 
 REGISTERED_RPN_CLASSES = {}
 
@@ -219,6 +219,7 @@ class RPNNoHeadBase(nn.Module):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -235,6 +236,7 @@ class RPNNoHeadBase(nn.Module):
         self._num_upsample_filters = num_upsample_filters
         self._num_input_features = num_input_features
         self._use_norm = use_norm
+        self._use_switchnorm = use_switchnorm
         self._use_groupnorm = use_groupnorm
         self._num_groups = num_groups
         assert len(layer_strides) == len(layer_nums)
@@ -249,7 +251,9 @@ class RPNNoHeadBase(nn.Module):
             assert val == must_equal_list[0]
 
         if use_norm:
-            if use_groupnorm:
+            if use_switchnorm:
+                BatchNorm2d = SwitchNorm2d
+            elif use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=num_groups, eps=1e-3)(GroupNorm)
             else:
@@ -351,6 +355,7 @@ class RPNBase(RPNNoHeadBase):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -371,6 +376,7 @@ class RPNBase(RPNNoHeadBase):
             num_anchor_per_loc=num_anchor_per_loc,
             encode_background_as_zeros=encode_background_as_zeros,
             use_direction_classifier=use_direction_classifier,
+            use_switchnorm=use_switchnorm,
             use_groupnorm=use_groupnorm,
             num_groups=num_groups,
             box_code_size=box_code_size,
@@ -475,7 +481,9 @@ class ResNetRPN(RPNBase):
 class RPNV2(RPNBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
         if self._use_norm:
-            if self._use_groupnorm:
+            if self._use_switchnorm:
+                BatchNorm2d = SwitchNorm2d
+            elif self._use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=self._num_groups, eps=1e-3)(GroupNorm)
             else:
@@ -507,7 +515,9 @@ class RPNV2(RPNBase):
 class RPNNoHead(RPNNoHeadBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
         if self._use_norm:
-            if self._use_groupnorm:
+            if self._use_switchnorm:
+                BatchNorm2d = SwitchNorm2d
+            elif self._use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=self._num_groups, eps=1e-3)(GroupNorm)
             else:

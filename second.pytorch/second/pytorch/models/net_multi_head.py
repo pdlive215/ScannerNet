@@ -10,11 +10,12 @@ from torch.nn import functional as F
 from second.pytorch.models.voxelnet import register_voxelnet, VoxelNet
 from second.pytorch.models import rpn
 
+from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm2d 
 
 class SmallObjectHead(nn.Module):
     def __init__(self, num_filters, num_class, num_anchor_per_loc,
                  box_code_size, num_direction_bins, use_direction_classifier,
-                 encode_background_as_zeros):
+                 encode_background_as_zeros, use_switchnorm):
         super().__init__()
         self._num_anchor_per_loc = num_anchor_per_loc
         self._num_direction_bins = num_direction_bins
@@ -25,7 +26,8 @@ class SmallObjectHead(nn.Module):
             num_cls = num_anchor_per_loc * num_class
         else:
             num_cls = num_anchor_per_loc * (num_class + 1)
-
+        if use_switchnorm:
+            nn.BatchNorm2d = SwitchNorm2d
         self.net = nn.Sequential(
             nn.Conv2d(num_filters, 64, 3, bias=False, padding=1),
             nn.BatchNorm2d(64),

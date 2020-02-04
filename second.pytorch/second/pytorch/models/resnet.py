@@ -4,6 +4,7 @@ from torch.nn import functional as F
 
 from torchplus.nn import Empty, GroupNorm, Sequential
 
+from second.switchnorm.devkit.ops import switchable_norm
 
 def conv3x3(in_planes, out_planes, stride=1, indice_key=None):
     """3x3 convolution with padding"""
@@ -37,7 +38,8 @@ class SparseBasicBlock(spconv.SparseModule):
                  planes,
                  stride=1,
                  downsample=None,
-                 indice_key=None):
+                 indice_key=None,
+                 use_switchnorm=False):
         super(SparseBasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride, indice_key=indice_key)
         self.bn1 = nn.BatchNorm1d(planes)

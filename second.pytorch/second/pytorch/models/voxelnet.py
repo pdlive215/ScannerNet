@@ -16,7 +16,6 @@ from second.pytorch.models import middle, pointpillars, rpn, voxel_encoder
 from torchplus import metrics
 from second.pytorch.utils import torch_timer
 
-
 def _get_pos_neg_loss(cls_loss, labels):
     # cls_loss: [N, num_anchors, num_class]
     # labels: [N, num_anchors]
@@ -75,6 +74,7 @@ class VoxelNet(nn.Module):
                  rpn_upsample_strides=[1, 2, 4],
                  rpn_num_upsample_filters=[256, 256, 256],
                  use_norm=True,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  use_direction_classifier=True,
@@ -142,6 +142,7 @@ class VoxelNet(nn.Module):
         self.voxel_feature_extractor = voxel_encoder.get_vfe_class(vfe_class_name)(
             num_input_features,
             use_norm,
+            use_switchnorm,
             num_filters=vfe_num_filters,
             with_distance=with_distance,
             voxel_size=self.voxel_generator.voxel_size,
@@ -150,6 +151,7 @@ class VoxelNet(nn.Module):
         self.middle_feature_extractor = middle.get_middle_class(middle_class_name)(
             output_shape,
             use_norm,
+            use_switchnorm,
             num_input_features=middle_num_input_features,
             num_filters_down1=middle_num_filters_d1,
             num_filters_down2=middle_num_filters_d2)
@@ -165,6 +167,7 @@ class VoxelNet(nn.Module):
             num_anchor_per_loc=target_assigner.num_anchors_per_location,
             encode_background_as_zeros=encode_background_as_zeros,
             use_direction_classifier=use_direction_classifier,
+            use_switchnorm=use_switchnorm,
             use_groupnorm=use_groupnorm,
             num_groups=num_groups,
             box_code_size=target_assigner.box_coder.code_size,
