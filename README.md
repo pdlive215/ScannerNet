@@ -34,7 +34,14 @@ torch==1.0.0
 torchvision==0.2.1  
 wheel==0.29.0
 
-#### Create environment variable for data directory. This directory should include the following subdirectories downloaded from the NuScenes dataset  
+#### Install SECOND (see https://github.com/pdlive215/ScannerNet/second.pytorch)
+
+#### Download nuScenes data
+Sign up at https://www.nuscenes.org/sign-up  
+Go to https://www.nuscenes.org/download  
+For fastest experimentation, download the "mini" subset of "trainval"
+
+#### Create environment variable for data directory. This directory should include the following subdirectories downloaded from the nuScenes dataset  
 
 maps/  
 samples/  
@@ -42,7 +49,7 @@ sweeps/
 v1.0-mini/  
 v1.0-trainval/
 
-export DATA=<data directory>
+export DATA=$$data directory$$
 
 #### Run the following commands in $$root directory$$/ScannerNet/second.pytorch/second
 
@@ -54,3 +61,5 @@ You can also create a ground truth database with velocity by specifying --datase
 
 Train:  
 python train.py train --config_path=../configs/nuscenes/$$config file$$--model_dir=$$model directory$$
+
+Training currently breaks at each evaluation. To resume training, run `python train.py`
