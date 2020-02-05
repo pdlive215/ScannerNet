@@ -42,7 +42,7 @@ sweeps/
 v1.0-mini/  
 v1.0-trainval/
 
-export DATA=$$data directory$$
+export DATA=<data directory>
 
 #### Run the following commands in $$root directory$$/ScannerNet/second.pytorch/second
 
