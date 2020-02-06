@@ -1,13 +1,15 @@
 # SECOND for KITTI/NuScenes object detection (1.6.0 Alpha)
-SECOND detector.
+This is a fork of the SECOND repository (https://github.com/traveller59/second.pytorch)
 
-"Alpha" means there may be many bugs, config format may change, spconv API may change.
+Requirements (see ScannerNet README):
 
-ONLY support python 3.6+, pytorch 1.0.0+. Tested in Ubuntu 16.04/18.04/Windows 10.
+Python 3.6+
+Pytorch 1.0.0+ 
+Ubuntu 16.04/18.04 or Windows 10.
 
-If you want to train nuscenes dataset, see [this](NUSCENES-GUIDE.md).
+If you want to train on the nuScenes dataset, see [this](NUSCENES-GUIDE.md).
 
-## News
+## Releases
 
 2019-4-1: SECOND V1.6.0alpha released: New Data API, [NuScenes](https://www.nuscenes.org) support, [PointPillars](https://github.com/nutonomy/second.pytorch) support, fp16 and multi-gpu support.
 
@@ -48,7 +50,7 @@ bev  AP:90.38, 88.20, 86.98
 3d   AP:89.16, 78.78, 77.41
 ```
 
-### Performance in NuScenes validation set (all.pp.config, NuScenes mini train set, 3517 samples, not v1.0-mini)
+### Performance on NuScenes validation set (all.pp.config, NuScenes mini train set, 3517 samples, not v1.0-mini)
 
 ```
 car Nusc dist AP@0.5, 1.0, 2.0, 4.0
