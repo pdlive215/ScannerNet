@@ -39,13 +39,19 @@ class SparseBasicBlock(spconv.SparseModule):
                  stride=1,
                  downsample=None,
                  indice_key=None,
-                 use_switchnorm=False):
+                 use_switchnorm=True):
         super(SparseBasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride, indice_key=indice_key)
-        self.bn1 = nn.BatchNorm1d(planes)
+        if use_switchnorm:
+            self.bn1 = SwitchNorm1d(planes)
+        else:
+            self.bn1 = nn.BatchNorm1d(planes)
         self.relu = nn.ReLU()
         self.conv2 = conv3x3(planes, planes, indice_key=indice_key)
-        self.bn2 = nn.BatchNorm1d(planes)
+        if use_switchnorm:
+            self.bn2 = SwitchNorm1d(planes)
+        else:
+            self.bn2 = nn.BatchNorm1d(planes)
         self.downsample = downsample
         self.stride = stride
 
@@ -76,15 +82,25 @@ class SparseBottleneck(spconv.SparseModule):
                  planes,
                  stride=1,
                  downsample=None,
-                 indice_key=None):
+                 indice_key=None,
+                 use_switchnorm=True):
         super(SparseBottleneck, self).__init__()
         self.conv1 = conv1x1(inplanes, planes, indice_key=indice_key)
-        self.bn1 = nn.BatchNorm1d(planes)
+        if use_switchnorm:
+            self.bn1 = SwitchNorm1d(planes)
+        else:
+            self.bn1 = nn.BatchNorm1d(planes)
         self.conv2 = conv3x3(planes, planes, stride, indice_key=indice_key)
-        self.bn2 = nn.BatchNorm1d(planes)
+        if use_switchnorm:
+            self.bn2 = SwitchNorm1d(planes)
+        else:
+            self.bn2 = nn.BatchNorm1d(planes)
         self.conv3 = conv1x1(
             planes, planes * self.expansion, indice_key=indice_key)
-        self.bn3 = nn.BatchNorm1d(planes * self.expansion)
+        if use_switchnorm:
+            self.bn3 = SwitchNorm1d(planes * self.expansion)
+        else:
+            self.bn3 = nn.BatchNorm1d(planes * self.expansion)
         self.relu = nn.ReLU()
         self.downsample = downsample
         self.stride = stride

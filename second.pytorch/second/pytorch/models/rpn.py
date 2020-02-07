@@ -67,10 +67,8 @@ class RPN(nn.Module):
                 np.prod(layer_strides[:i + 1]) // upsample_strides[i])
         assert all([x == factors[0] for x in factors])
         if use_norm:
-            
-            if use_switchnorm:
+            if  use_switchnorm:
                 BatchNorm2d = SwitchNorm2d
-
             elif use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=num_groups, eps=1e-3)(GroupNorm)
