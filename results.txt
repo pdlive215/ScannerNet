@@ -1,6 +1,6 @@
 Performance tests
 
-Train v1.0-mini (to identify network config performance very early in training) [K80]
+v1.0-mini (to identify network config performance very early in training) [K80]
 
 config (steps)        cls_loss  loc_loss   prec@10   rec@10    prec@30   rec@30  
 all.fhd (500)          .9244    1.759      .02969    .1225     0         0
@@ -16,7 +16,7 @@ all.pp.mida (1000)     .4916    1.333      .036      .6737      .3777     .07718
 all.pp.mida (1500)     .4578    1.299      .03389    .6861      .317      .1551            
 all.pp.mida (5850)     .2288     .5258     .1044     .8896      .6591     .6024 
 
-Train v1.0-mini starting with pretrained VoxelNet model [K80]
+v1.0-mini starting with pretrained VoxelNet model [K80]
 
 config (steps)        prec@10   rec@10    prec@30   rec@30
 all.fhd (500)          .02591   .08893    0         0
@@ -31,10 +31,56 @@ all.pp.mida (500)      .02405   .6222     0         0
 all.pp.mida (1000)     .04046   .6779      .4319     .09371
 all.pp.mida (5850)     .0991    .8886      .6533     .5872
 
-Train v1.0-mini starting with pretrained VoxelNet model and switchnorm [V100]
+v1.0-mini starting with pretrained VoxelNet model and switchnorm for voxel encoder and RPN [V100]
 
-config (steps)      prec@10 rec@10  prec@30 rec@30  prec@50/rec@50/prec@70/rec@70/prec@80/rec@80/prec@90/rec@90/prec@95/rec@95
+config (steps)      prec@10 rec@10  prec@30 rec@30  
 all.pp.mida (500)   .02998  .6286   .4171   .01425
 all.pp.mida (1000)  .04001  .7121   .4417   .1192
 all.pp.mida (1500)  .05268  .6338   .5138   .2167
-all.pp.mida (5850)  .1143   .9082   .6908   .6359   .9455   .3795  .9953   .1356   1      .04473  1      .001091  0      0      
+all.pp.mida (5850)  .1143   .9082   .6908   .6359
+
+All subsequent tests use the all.pp.mida config trained on a single V100
+
+v1.0-mini with pretrained VoxelNet model and no switchnorm (train metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5850
+11700
+17550
+23450
+29300
+35150
+41050
+46900
+
+v1.0-mini with pretrained VoxelNet model and no switchnorm (val metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5865
+11730
+17595
+23460
+29325
+35190
+41055
+46920
+
+v1.0-mini with pretrained VoxelNet model and switchnorm for voxel encoder and RPN (train metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5850
+
+v1.0-mini with pretrained VoxelNet model and switchnorm for voxel encoder and RPN (val metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5865
+
+v1.0-mini with pretrained VoxelNet model and switchnorm for voxel encoder, backbone, and RPN (train metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5850
+
+v1.0-mini with pretrained VoxelNet model and switchnorm for voxel encoder, backbone, and RPN (val metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5865
