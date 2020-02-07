@@ -4,11 +4,11 @@ LIDAR object detection using nuScenes dataset based on SECOND implementation of 
 #### System
 
 Ubuntu 16.04 / 18.04 (developed on 18.04)  
-gcc (developed on 6.3.0)  
-cmake >= 3.13.2 (developed on 3.16.3)  
+`gcc` (developed on 6.3.0)  
+`cmake` >= 3.13.2 (developed on 3.16.3)  
 Python 3.6 or 3.7 (developed on 3.7.4)  
-spconv (follow instructions in monoRGBNet/spconv)
-libbz2-dev
+`spconv` (follow instructions in `ScannerNet/spconv`)
+`libbz2-dev`
 
 Clone repository:  
 `git clone --recursive https://github.com/pdlive215/ScannerNet`
@@ -45,13 +45,13 @@ For fastest experimentation, download the `mini` subset of `trainval`
 
 `maps/`  
 `samples/`  
-`sweeps/` 
+`sweeps/`  
 `v1.0-mini/`  
 `v1.0-trainval/`
 
 `export DATA=<data directory>`
 
-#### Run the following commands in $$root directory$$/ScannerNet/second.pytorch/second
+#### Run the following commands in `<root directory>/ScannerNet/second.pytorch/second`
 
 Create dataset:  
 `python create_data.py nuscenes_data_prep --root_path=$DATA --version=<version> --dataset_name="NuScenesDataset" --version=<version> --max_sweeps=10`
