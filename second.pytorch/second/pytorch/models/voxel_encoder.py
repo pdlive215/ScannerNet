@@ -51,7 +51,7 @@ def get_paddings_indicator(actual_num, max_num, axis=0):
 
 class VFELayer(nn.Module):
     def __init__(self, in_channels, out_channels, use_norm=True,
-            use_switchnorm=True, name='vfe'):
+            use_switchnorm=False, name='vfe'):
         super(VFELayer, self).__init__()
         self.name = name
         self.units = int(out_channels / 2)
@@ -89,7 +89,7 @@ class VoxelFeatureExtractor(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
-                 use_switchnorm=True,
+                 use_switchnorm=False,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -154,7 +154,7 @@ class VoxelFeatureExtractorV2(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
-                 use_switchnorm=True,
+                 use_switchnorm=False,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -219,7 +219,7 @@ class SimpleVoxel(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
-                 use_switchnorm=True,
+                 use_switchnorm=False,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -244,7 +244,7 @@ class SimpleVoxelRadius(nn.Module):
     def __init__(self,
                  num_input_features=4,
                  use_norm=True,
-                 use_switchnorm=True,
+                 use_switchnorm=False,
                  num_filters=(32, 128),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),

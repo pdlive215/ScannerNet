@@ -39,7 +39,7 @@ class SparseBasicBlock(spconv.SparseModule):
                  stride=1,
                  downsample=None,
                  indice_key=None,
-                 use_switchnorm=True):
+                 use_switchnorm=False):
         super(SparseBasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride, indice_key=indice_key)
         if use_switchnorm:
@@ -83,7 +83,7 @@ class SparseBottleneck(spconv.SparseModule):
                  stride=1,
                  downsample=None,
                  indice_key=None,
-                 use_switchnorm=True):
+                 use_switchnorm=False):
         super(SparseBottleneck, self).__init__()
         self.conv1 = conv1x1(inplanes, planes, indice_key=indice_key)
         if use_switchnorm:
