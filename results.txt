@@ -70,7 +70,7 @@ steps   mAP    mATE    mASE    mAOE    mAVE    mAAE    NDS
 11730  .0074  .8111   .7729   1.0459  1.0000  .6626   .0790
 17595  .0113  .8277   .7107   1.0316  1.0000  .6650   .0853
 
-
+# TODO
 v1.0-mini with pretrained model and no switchnorm (train metrics)
 v1.0-mini with pretrained model and no switchnorm (val metrics)
 v1.0-mini with pretrained model and switchnorm for voxel encoder and RPN (train metrics)
