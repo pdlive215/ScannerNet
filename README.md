@@ -84,9 +84,7 @@ Model architectures are defined in `pytorch/models`:
 
 Pretrained models are defined in `pytorch/pretrained_models_v1.5/pp_model_for_nuscenes_pretrain`:  
 `no_switchnorm`: No switchnorm  
-`no_switchnorm_pretrained`: No switchnorm, pretrained on VoxelNet  
-`sparse_switchnorm`: Sparse switchnorm  
-`sparse_switchnorm_pretrained`: Sparse switchnorm, pretrained on VoxelNet  
+`no_switchnorm_pretrained`: No switchnorm, pretrained on VoxelNet   
 `switchnorm`: Switchnorm  
 `switchnorm_pretrained`: Switchnorm, pretrained on VoxelNet  
 `switchnorm_no-rn`: Switchnorm, not applied to ResNet backbone  
