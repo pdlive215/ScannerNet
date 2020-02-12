@@ -63,3 +63,35 @@ Train:
 `python train.py train --config_path=../configs/nuscenes/<config file> --model_dir=<model directory>`
 
 Training currently breaks at each evaluation (every 5865 train steps). To resume training, run `python train.py train --config_path=../configs/nuscenes/$$config file$$--model_dir=<model directory> --resume`
+
+#### `ScannerNet/second.pytorch/second` contains configurations (`configs`) and model scripts (`pytorch`)
+
+Nuscenes configuration files are defined in `configs/nuscenes`:
+
+`all.fhd.config`: VoxelNet with SimpleVoxel VFE and SpMiddleFHD MFE   
+`all.pp.deprecated.config`: PillarFeatureNetOld VFE and PointPillarsScatter MFE  
+`all.pp.largea.config`: VoxelNet with PillarFeatureNet VFE and PointPillarsScatter MFE  
+`all.pp.lowa.config`: VoxelNet with PillarFeatureNet VFE and PointPillarsScatter MFE  
+`all.pp.mhead.config`: VoxelNetMultiscenesMultiHead with PillarFeatureNetRadius VFE and PointPillarsScatter MFE  
+`all.pp.mida.config`: VoxelNet with PillarFeatureNetOld VFE and PointPillarsScatter MFE
+
+Model architectures are defined in `pytorch/models`:
+`middle.py`  
+`net_multi_head.py`  
+`pointpillars.py`  
+`rpn.py`  
+`voxel_encoder.py`  
+`voxelnet.py`
+
+Pretrained models are defined in `pytorch/pretrained_models_v1.5/pp_model_for_nuscenes_pretrain`:
+`no_switchnorm`: No switchnorm  
+`no_switchnorm_pretrained`: No switchnorm, pretrained on VoxelNet  
+`sparse_switchnorm`: Sparse switchnorm  
+`sparse_switchnorm_pretrained`: Sparse switchnorm, pretrained on VoxelNet  
+`switchnorm`: Switchnorm  
+`switchnorm_pretrained`: Switchnorm, pretrained on VoxelNet  
+`switchnorm_no-rn`: Switchnorm, not applied to ResNet backbone  
+`switchnorm_no-rn_pretrained`: Switchnorm, not applied to ResNet backbone, pretrained on VoxelNet
+
+`_pretrained` directories contain a checkpoint file of VoxelNet trained for 296,960 iterations  
+Checkpoints are stored at (up to) the following number of iterations: 5864, 5865 (except for `switchnorm_no-rn_pretrained`), 11729, 11730, 17594, 17595, 23459, 23460, 29324, 29325, 35189, 35190, 41054, 41055, 46919, 46920
