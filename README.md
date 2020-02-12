@@ -66,8 +66,7 @@ Training currently breaks at each evaluation (every 5865 train steps). To resume
 
 #### `ScannerNet/second.pytorch/second` contains configurations (`configs`) and model scripts (`pytorch`)
 
-Nuscenes configuration files are defined in `configs/nuscenes`:
-
+Nuscenes configuration files are defined in `configs/nuscenes`:  
 `all.fhd.config`: VoxelNet with SimpleVoxel VFE and SpMiddleFHD MFE   
 `all.pp.deprecated.config`: PillarFeatureNetOld VFE and PointPillarsScatter MFE  
 `all.pp.largea.config`: VoxelNet with PillarFeatureNet VFE and PointPillarsScatter MFE  
@@ -75,7 +74,7 @@ Nuscenes configuration files are defined in `configs/nuscenes`:
 `all.pp.mhead.config`: VoxelNetMultiscenesMultiHead with PillarFeatureNetRadius VFE and PointPillarsScatter MFE  
 `all.pp.mida.config`: VoxelNet with PillarFeatureNetOld VFE and PointPillarsScatter MFE
 
-Model architectures are defined in `pytorch/models`:
+Model architectures are defined in `pytorch/models`:  
 `middle.py`  
 `net_multi_head.py`  
 `pointpillars.py`  
@@ -83,7 +82,7 @@ Model architectures are defined in `pytorch/models`:
 `voxel_encoder.py`  
 `voxelnet.py`
 
-Pretrained models are defined in `pytorch/pretrained_models_v1.5/pp_model_for_nuscenes_pretrain`:
+Pretrained models are defined in `pytorch/pretrained_models_v1.5/pp_model_for_nuscenes_pretrain`:  
 `no_switchnorm`: No switchnorm  
 `no_switchnorm_pretrained`: No switchnorm, pretrained on VoxelNet  
 `sparse_switchnorm`: Sparse switchnorm  
