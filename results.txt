@@ -59,9 +59,9 @@ steps   mAP    mATE    mASE    mAOE    mAVE    mAAE    NDS
 v1.0-mini trained from scratch and switchnorm for voxel encoder, backbone, and RPN (train metrics)
 
 steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
-5850   .1358  .9281   .6978   .7115   .9402   .4604   .9954   .1768   1.0     .06683  1.0     .01012  1.0     .0003149
-11700  .204   .9582   .7773   .8107   .9529   .625    .9963   .9963   .9992   .2019   1.0     .03     1.0     .0008681   
-17550  .3108  .9795   .839    .8897   .9698   .7551   .9972   .5312   .9996   .351    .9997   .1039   1.0     .01041
+5850   .1052  .8957   .657    .6057  .9347    .3405   .9917   .1023   .9993   .02851  1.0     .002662 1.0     .0001467
+11700  .1977  .9566   .7736   .8028  .9541    .6152   .9929   .356    .9976   .189    1.0     .03386  1.0     .004697  
+17550  .2802  .9749   .8189   .8725  .962     .7315   .9938   .5269   .9992   .3569   1.0     .1148   1.0     .01692
 
 v1.0-mini trained from scratch and switchnorm for voxel encoder, backbone, and RPN (val metrics)
 
@@ -70,13 +70,31 @@ steps   mAP    mATE    mASE    mAOE    mAVE    mAAE    NDS
 11730  .0074  .8111   .7729   1.0459  1.0000  .6626   .0790
 17595  .0113  .8277   .7107   1.0316  1.0000  .6650   .0853
 
-# TODO
 v1.0-mini with pretrained model and no switchnorm (train metrics)
-
-steps
-
 v1.0-mini with pretrained model and no switchnorm (val metrics)
+
 v1.0-mini with pretrained model and switchnorm for voxel encoder and RPN (train metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5850   .1364  .9231   .7111   .7123   .9409   .4677   .9955   .1906   .9997   .07262  1.0     .004392 1.0     .0000426
+11700  .2088  .9603   .7905   .8154   .9605   .632    .9976   .3855   .9997   .2246   1.0     .05293  1.0     .003629
+
 v1.0-mini with pretrained model and switchnorm for voxel encoder and RPN (val metrics)
-v1.0-mini trained from scratch and switchnorm for voxel encoder, backbone, and RPN (train metrics)
-v1.0-mini trained from scratch and switchnorm for voxel encoder, backbone, and RPN (val metrics)
+
+steps   mAP    mATE    mASE    mAOE    mAVE    mAAE    NDS
+5865   .0206  .8745   .7116    .9598  1.0000  .6625   .0890
+11730
+
+v1.0-mini with pretrained model and switchnorm for voxel encoder, backbone, and RPN (train metrics)
+
+steps prec@10 rec@10  prec@30 rec@30 prec@50  rec@50  prec@70 rec@70  prec@80 rec@80  prec@90 rec@90 prec@95  rec@95
+5850   .1358  .9281   .6978   .7115   .9402   .4604   .9954   .1768   1.0     .06683  1.0     .01012  1.0     .0003149
+11700  .204   .9582   .7773   .8107   .9529   .625    .9963   .9963   .9992   .2019   1.0     .03     1.0     .0008681   
+17550  .3108  .9795   .839    .8897   .9698   .7551   .9972   .5312   .9996   .351    .9997   .1039   1.0     .01041
+
+v1.0-mini with pretrained model and switchnorm for voxel encoder, backbone, and RPN (val metrics)
+
+steps   mAP    mATE    mASE    mAOE    mAVE    mAAE    NDS
+5865   .0158  .7712   .6617    .9873  1.0000  .6609   .0998
+11730  .0252  .8195   .7279    .9471  1.0000  .6661   .0965
+17595  .0237  .8383   .7053   1.0123  1.0000  .6692   .0906
