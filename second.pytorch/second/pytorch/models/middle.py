@@ -13,6 +13,7 @@ from torchplus.tools import change_default_args
 from second.pytorch.utils import torch_timer
 
 from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm1d, SwitchNorm2d
+from second.sparse_switchnorm.utils.sparse_switchable_norm import SSN2d
 
 REGISTERED_MIDDLE_CLASSES = {}
 
@@ -34,8 +35,8 @@ def get_middle_class(name):
 class SparseMiddleExtractor(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
@@ -43,7 +44,9 @@ class SparseMiddleExtractor(nn.Module):
         super(SparseMiddleExtractor, self).__init__()
         self.name = name
         if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            Linear = change_default_args(bias=False)(nn.Linear)
         elif use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
@@ -116,18 +119,36 @@ class SparseMiddleExtractor(nn.Module):
 class SpMiddleFHD(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
+                 use_norm=False,
                  use_switchnorm=False,
+                 use_sparse_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddleFHD'):
         super(SpMiddleFHD, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm2d = SwitchNorm2d
-            BatchNorm1d = SwitchNorm1d
         if use_norm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d) 
+        elif use_sparse_switchnorm:
             BatchNorm2d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
             BatchNorm1d = change_default_args(

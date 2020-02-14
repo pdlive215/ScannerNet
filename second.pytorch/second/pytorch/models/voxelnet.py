@@ -74,7 +74,7 @@ class VoxelNet(nn.Module):
                  rpn_upsample_strides=[1, 2, 4],
                  rpn_num_upsample_filters=[256, 256, 256],
                  use_norm=True,
-                 use_switchnorm=False,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  use_direction_classifier=True,
