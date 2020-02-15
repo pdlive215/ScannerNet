@@ -50,16 +50,18 @@ def get_paddings_indicator(actual_num, max_num, axis=0):
     return paddings_indicator
 
 class VFELayer(nn.Module):
-    def __init__(self, in_channels, out_channels, use_norm=True,
-            use_switchnorm=False, name='vfe'):
+    def __init__(self, in_channels, out_channels, use_norm=False,
+            use_switchnorm=True, name='vfe'):
         super(VFELayer, self).__init__()
         self.name = name
         self.units = int(out_channels / 2)
-        if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
-        elif use_norm:
+        if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Linear = change_default_args(bias=False)(nn.Linear)
+        elif use_switchnorm:
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
         else:
             BatchNorm1d = Empty
@@ -88,8 +90,8 @@ class VFELayer(nn.Module):
 class VoxelFeatureExtractor(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -97,11 +99,13 @@ class VoxelFeatureExtractor(nn.Module):
                  name='VoxelFeatureExtractor'):
         super(VoxelFeatureExtractor, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
-        elif use_norm:
+        if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Linear = change_default_args(bias=False)(nn.Linear)
+        elif use_switchnorm:
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
         else:
             BatchNorm1d = Empty
@@ -111,8 +115,8 @@ class VoxelFeatureExtractor(nn.Module):
         if with_distance:
             num_input_features += 1
         self._with_distance = with_distance
-        self.vfe1 = VFELayer(num_input_features, num_filters[0], use_norm)
-        self.vfe2 = VFELayer(num_filters[0], num_filters[1], use_norm)
+        self.vfe1 = VFELayer(num_input_features, num_filters[0])
+        self.vfe2 = VFELayer(num_filters[0], num_filters[1])
         self.linear = Linear(num_filters[1], num_filters[1])
         # var_torch_init(self.linear.weight)
         # var_torch_init(self.linear.bias)
@@ -153,8 +157,8 @@ class VoxelFeatureExtractorV2(nn.Module):
     """
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -162,11 +166,13 @@ class VoxelFeatureExtractorV2(nn.Module):
                  name='VoxelFeatureExtractor'):
         super(VoxelFeatureExtractorV2, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
-        elif use_norm:
+        if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Linear = change_default_args(bias=False)(nn.Linear)
+        elif use_switchnorm:
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
         else:
             BatchNorm1d = Empty
@@ -181,7 +187,7 @@ class VoxelFeatureExtractorV2(nn.Module):
         filters_pairs = [[num_filters[i], num_filters[i + 1]]
                          for i in range(len(num_filters) - 1)]
         self.vfe_layers = nn.ModuleList(
-            [VFELayer(i, o, use_norm) for i, o in filters_pairs])
+            [VFELayer(i, o) for i, o in filters_pairs])
         self.linear = Linear(num_filters[-1], num_filters[-1])
         # var_torch_init(self.linear.weight)
         # var_torch_init(self.linear.bias)
@@ -218,8 +224,8 @@ class VoxelFeatureExtractorV2(nn.Module):
 class SimpleVoxel(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=[32, 128],
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -243,8 +249,8 @@ class SimpleVoxelRadius(nn.Module):
 
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=(32, 128),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),

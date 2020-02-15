@@ -73,7 +73,7 @@ class VoxelNet(nn.Module):
                  rpn_num_filters=[128, 128, 256],
                  rpn_upsample_strides=[1, 2, 4],
                  rpn_num_upsample_filters=[256, 256, 256],
-                 use_norm=True,
+                 use_norm=False,
                  use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
@@ -146,7 +146,7 @@ class VoxelNet(nn.Module):
             num_filters=vfe_num_filters,
             with_distance=with_distance,
             voxel_size=self.voxel_generator.voxel_size,
-            pc_range=self.voxel_generator.point_cloud_range,
+            pc_range=self.voxel_generator.point_cloud_range
         )
         self.middle_feature_extractor = middle.get_middle_class(middle_class_name)(
             output_shape,
@@ -156,7 +156,7 @@ class VoxelNet(nn.Module):
             num_filters_down1=middle_num_filters_d1,
             num_filters_down2=middle_num_filters_d2)
         self.rpn = rpn.get_rpn_class(rpn_class_name)(
-            use_norm=True,
+            use_norm=False,
             num_class=num_class,
             layer_nums=rpn_layer_nums,
             layer_strides=rpn_layer_strides,

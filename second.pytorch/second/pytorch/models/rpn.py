@@ -29,7 +29,7 @@ def get_rpn_class(name):
 @register_rpn
 class RPN(nn.Module):
     def __init__(self,
-                 use_norm=True,
+                 use_norm=False,
                  num_class=2,
                  layer_nums=(3, 5, 5),
                  layer_strides=(2, 2, 2),
@@ -40,7 +40,7 @@ class RPN(nn.Module):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
-                 use_switchnorm=False,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -66,10 +66,11 @@ class RPN(nn.Module):
             factors.append(
                 np.prod(layer_strides[:i + 1]) // upsample_strides[i])
         assert all([x == factors[0] for x in factors])
-        if use_norm:
-            if  use_switchnorm:
-                BatchNorm2d = SwitchNorm2d
-            elif use_groupnorm:
+        if use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+        elif use_norm:
+            if use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=num_groups, eps=1e-3)(GroupNorm)
             else:
@@ -206,7 +207,7 @@ class RPN(nn.Module):
 
 class RPNNoHeadBase(nn.Module):
     def __init__(self,
-                 use_norm=True,
+                 use_norm=False,
                  num_class=2,
                  layer_nums=(3, 5, 5),
                  layer_strides=(2, 2, 2),
@@ -217,7 +218,7 @@ class RPNNoHeadBase(nn.Module):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
-                 use_switchnorm=False,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -247,11 +248,14 @@ class RPNNoHeadBase(nn.Module):
                 layer_strides[:i + self._upsample_start_idx + 1]))
         for val in must_equal_list:
             assert val == must_equal_list[0]
-
-        if use_norm:
-            if use_switchnorm:
-                BatchNorm2d = SwitchNorm2d
-            elif use_groupnorm:
+        if use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif use_norm:
+            if use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=num_groups, eps=1e-3)(GroupNorm)
             else:
@@ -342,7 +346,7 @@ class RPNNoHeadBase(nn.Module):
 
 class RPNBase(RPNNoHeadBase):
     def __init__(self,
-                 use_norm=True,
+                 use_norm=False,
                  num_class=2,
                  layer_nums=(3, 5, 5),
                  layer_strides=(2, 2, 2),
@@ -353,7 +357,7 @@ class RPNBase(RPNNoHeadBase):
                  num_anchor_per_loc=2,
                  encode_background_as_zeros=True,
                  use_direction_classifier=True,
-                 use_switchnorm=False,
+                 use_switchnorm=True,
                  use_groupnorm=False,
                  num_groups=32,
                  box_code_size=7,
@@ -478,10 +482,14 @@ class ResNetRPN(RPNBase):
 @register_rpn
 class RPNV2(RPNBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
-        if self._use_norm:
-            if self._use_switchnorm:
-                BatchNorm2d = SwitchNorm2d
-            elif self._use_groupnorm:
+        if self._use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif self._use_norm:
+            if self._use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=self._num_groups, eps=1e-3)(GroupNorm)
             else:
@@ -512,10 +520,11 @@ class RPNV2(RPNBase):
 @register_rpn
 class RPNNoHead(RPNNoHeadBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
-        if self._use_norm:
-            if self._use_switchnorm:
-                BatchNorm2d = SwitchNorm2d
-            elif self._use_groupnorm:
+        if self._use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+        elif self._use_norm:
+            if self._use_groupnorm:
                 BatchNorm2d = change_default_args(
                     num_groups=self._num_groups, eps=1e-3)(GroupNorm)
             else:

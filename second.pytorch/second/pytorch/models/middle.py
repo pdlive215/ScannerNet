@@ -13,7 +13,6 @@ from torchplus.tools import change_default_args
 from second.pytorch.utils import torch_timer
 
 from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm1d, SwitchNorm2d
-from second.sparse_switchnorm.utils.sparse_switchable_norm import SSN2d
 
 REGISTERED_MIDDLE_CLASSES = {}
 
@@ -120,8 +119,7 @@ class SpMiddleFHD(nn.Module):
     def __init__(self,
                  output_shape,
                  use_norm=False,
-                 use_switchnorm=False,
-                 use_sparse_switchnorm=True,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
@@ -148,16 +146,6 @@ class SpMiddleFHD(nn.Module):
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d) 
-        elif use_sparse_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
-            Conv2d = change_default_args(bias=False)(nn.Conv2d)
-            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
-            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
-            ConvTranspose2d = change_default_args(bias=False)(
-                nn.ConvTranspose2d)
         else:
             BatchNorm2d = Empty
             BatchNorm1d = Empty
@@ -243,17 +231,14 @@ class SpMiddleFHD(nn.Module):
 class SpMiddleFHDPeople(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddleFHD'):
         super(SpMiddleFHDPeople, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm2d = SwitchNorm2d
-            BatchNorm1d = SwtichNorm1d
         if use_norm:
             BatchNorm2d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
@@ -262,6 +247,16 @@ class SpMiddleFHDPeople(nn.Module):
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMCon3d = change_default_args(bias=False)(spconv.SubMConv3d)
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         else:
@@ -336,17 +331,14 @@ class SpMiddleFHDPeople(nn.Module):
 class SpMiddle2K(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddle2K'):
         super(SpMiddle2K, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm2d = BatchNorm2d
-            BatchNorm1d = SwitchNorm1d
         if use_norm:
             BatchNorm2d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
@@ -357,7 +349,17 @@ class SpMiddle2K(nn.Module):
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
-        else:
+        elif use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        else:            
             BatchNorm2d = Empty
             BatchNorm1d = Empty
             Conv2d = change_default_args(bias=True)(nn.Conv2d)
@@ -456,22 +458,29 @@ class SpMiddle2K(nn.Module):
 class SpMiddleFHDLite(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddleFHDLite'):
         super(SpMiddleFHDLite, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm2d = SwitchNorm2d
-            BatchNorm1d = SwitchNorm1d
         if use_norm:
             BatchNorm2d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -488,7 +497,7 @@ class SpMiddleFHDLite(nn.Module):
         sparse_shape = np.array(output_shape[1:4]) + [1, 0, 0]
         # sparse_shape[0] = 11
         print(sparse_shape)
-        self.sparse_shape = sparse_shape
+        self.parse_shape = sparse_shape
         self.voxel_output_shape = output_shape
         # input: # [1600, 1200, 41]
         self.middle_conv = spconv.SparseSequential(
@@ -528,22 +537,29 @@ class SpMiddleFHDLite(nn.Module):
 class SpMiddleFHDLiteHRZ(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddleFHDLite'):
         super(SpMiddleFHDLiteHRZ, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm2d = SwitchNorm2d
-            BatchNorm1d = SwitchNorm1d
         if use_norm:
             BatchNorm2d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm2d)
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            Conv2d = change_default_args(bias=False)(nn.Conv2d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+            ConvTranspose2d = change_default_args(bias=False)(
+                nn.ConvTranspose2d)
+        elif use_switchnorm:
+            BatchNorm2d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -601,19 +617,22 @@ class SpMiddleFHDLiteHRZ(nn.Module):
 class SpMiddleFHDHRZ(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=128,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
                  name='SpMiddleFHD'):
         super(SpMiddleFHDHRZ, self).__init__()
         self.name = name
-        if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
         if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
+            SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
+            SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
+        elif use_switchnorm:
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
         else:

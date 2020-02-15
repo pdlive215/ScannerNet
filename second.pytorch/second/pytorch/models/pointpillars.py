@@ -20,8 +20,8 @@ class PFNLayer(nn.Module):
     def __init__(self,
                  in_channels,
                  out_channels,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  last_layer=False):
         """
         Pillar Feature Net Layer.
@@ -32,25 +32,23 @@ class PFNLayer(nn.Module):
         :param use_norm: <bool>. Whether to include BatchNorm.
         :param last_layer: <bool>. If last_layer, there is no concatenation of features.
         """
-
         super().__init__()
         self.name = 'PFNLayer'
         self.last_vfe = last_layer
         if not self.last_vfe:
             out_channels = out_channels // 2
         self.units = out_channels
-        
-        if use_switchnorm:
-            BatchNorm1d = SwitchNorm1d
-
         if use_norm:
             BatchNorm1d = change_default_args(
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
+        elif use_switchnorm:
+            BatchNorm1d = change_default_args(
+                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            Linear = change_default_args(bias=False)(nn.Linear)
         else:
             BatchNorm1d = Empty
             Linear = change_default_args(bias=True)(nn.Linear)
-
         self.linear = Linear(in_channels, self.units)
         self.norm = BatchNorm1d(self.units)
 
@@ -74,8 +72,8 @@ class PFNLayer(nn.Module):
 class PillarFeatureNetOld(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -161,8 +159,8 @@ class PillarFeatureNetOld(nn.Module):
 class PillarFeatureNet(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -248,8 +246,8 @@ class PillarFeatureNet(nn.Module):
 class PillarFeatureNetRadius(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -337,8 +335,8 @@ class PillarFeatureNetRadius(nn.Module):
 class PillarFeatureNetRadiusHeight(nn.Module):
     def __init__(self,
                  num_input_features=4,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_filters=(64, ),
                  with_distance=False,
                  voxel_size=(0.2, 0.2, 4),
@@ -431,8 +429,8 @@ class PillarFeatureNetRadiusHeight(nn.Module):
 class PointPillarsScatter(nn.Module):
     def __init__(self,
                  output_shape,
-                 use_norm=True,
-                 use_switchnorm=False,
+                 use_norm=False,
+                 use_switchnorm=True,
                  num_input_features=64,
                  num_filters_down1=[64],
                  num_filters_down2=[64, 64],
