@@ -43,8 +43,7 @@ class SparseMiddleExtractor(nn.Module):
         super(SparseMiddleExtractor, self).__init__()
         self.name = name
         if use_switchnorm:
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm1d = SwitchNorm1d
             Linear = change_default_args(bias=False)(nn.Linear)
         elif use_norm:
             BatchNorm1d = change_default_args(
@@ -137,10 +136,8 @@ class SpMiddleFHD(nn.Module):
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         elif use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm2d = SwitchNorm2d
+            BatchNorm1d = SwitchNorm1d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -250,10 +247,8 @@ class SpMiddleFHDPeople(nn.Module):
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         elif use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm2d = SwitchNorm2d
+            BatchNorm1d = SwitchNorm1d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMCon3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -350,10 +345,8 @@ class SpMiddle2K(nn.Module):
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         elif use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm2d = SwitchNorm2d
+            BatchNorm1d = SwitchNorm1d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -477,10 +470,8 @@ class SpMiddleFHDLite(nn.Module):
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         elif use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm2d = SwitchNorm2d
+            BatchNorm1d = SwitchNorm1d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -556,10 +547,8 @@ class SpMiddleFHDLiteHRZ(nn.Module):
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
         elif use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm2d = SwitchNorm2d
+            BatchNorm1d = SwitchNorm1d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
@@ -631,8 +620,7 @@ class SpMiddleFHDHRZ(nn.Module):
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
         elif use_switchnorm:
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm1d = SwitchNorm1d
             SpConv3d = change_default_args(bias=False)(spconv.SparseConv3d)
             SubMConv3d = change_default_args(bias=False)(spconv.SubMConv3d)
         else:

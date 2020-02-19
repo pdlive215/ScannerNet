@@ -67,8 +67,7 @@ class RPN(nn.Module):
                 np.prod(layer_strides[:i + 1]) // upsample_strides[i])
         assert all([x == factors[0] for x in factors])
         if use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm2d = SwitchNorm2d
         elif use_norm:
             if use_groupnorm:
                 BatchNorm2d = change_default_args(
@@ -249,8 +248,7 @@ class RPNNoHeadBase(nn.Module):
         for val in must_equal_list:
             assert val == must_equal_list[0]
         if use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm2d = SwitchNorm2d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
@@ -483,8 +481,7 @@ class ResNetRPN(RPNBase):
 class RPNV2(RPNBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
         if self._use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm2d = SwitchNorm2d
             Conv2d = change_default_args(bias=False)(nn.Conv2d)
             ConvTranspose2d = change_default_args(bias=False)(
                 nn.ConvTranspose2d)
@@ -521,8 +518,7 @@ class RPNV2(RPNBase):
 class RPNNoHead(RPNNoHeadBase):
     def _make_layer(self, inplanes, planes, num_blocks, stride=1):
         if self._use_switchnorm:
-            BatchNorm2d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm2d)
+            BatchNorm2d = SwitchNorm2d
         elif self._use_norm:
             if self._use_groupnorm:
                 BatchNorm2d = change_default_args(

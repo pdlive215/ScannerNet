@@ -15,7 +15,7 @@ from second.switchnorm.devkit.ops.switchable_norm import SwitchNorm2d
 class SmallObjectHead(nn.Module):
     def __init__(self, num_filters, num_class, num_anchor_per_loc,
                  box_code_size, num_direction_bins, use_direction_classifier,
-                 encode_background_as_zeros, use_switchnorm):
+                 encode_background_as_zeros, use_switchnorm=True):
         super().__init__()
         self._num_anchor_per_loc = num_anchor_per_loc
         self._num_direction_bins = num_direction_bins

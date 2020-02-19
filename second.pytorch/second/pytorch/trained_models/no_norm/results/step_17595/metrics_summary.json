@@ -1,0 +1,172 @@
+{
+  "label_aps": {
+    "car": {
+      "0.5": 0.0061303743121659815,
+      "1.0": 0.018815868486164865,
+      "2.0": 0.02798935283674848,
+      "4.0": 0.05219671204186895
+    },
+    "truck": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.00298855806376625,
+      "4.0": 0.0038261031134195
+    },
+    "bus": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "trailer": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "construction_vehicle": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "pedestrian": {
+      "0.5": 0.12670944637380593,
+      "1.0": 0.1705368218739219,
+      "2.0": 0.20799783926838022,
+      "4.0": 0.2515985131548309
+    },
+    "motorcycle": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "bicycle": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "traffic_cone": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    },
+    "barrier": {
+      "0.5": 0.0,
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0
+    }
+  },
+  "mean_dist_aps": {
+    "car": 0.02628307691923707,
+    "truck": 0.0017036652942964375,
+    "bus": 0.0,
+    "trailer": 0.0,
+    "construction_vehicle": 0.0,
+    "pedestrian": 0.18921065516773472,
+    "motorcycle": 0.0,
+    "bicycle": 0.0,
+    "traffic_cone": 0.0,
+    "barrier": 0.0
+  },
+  "mean_ap": 0.021719739738126822,
+  "label_tp_errors": {
+    "car": {
+      "trans_err": 0.6862368277693311,
+      "scale_err": 0.1846202473323295,
+      "orient_err": 1.246130298906028,
+      "vel_err": 1.0,
+      "attr_err": 0.15201565236711387
+    },
+    "truck": {
+      "trans_err": 0.9081569139016349,
+      "scale_err": 0.2813597771705811,
+      "orient_err": 0.8715719586305807,
+      "vel_err": 1.0,
+      "attr_err": 0.07417242617537478
+    },
+    "bus": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": 1.0,
+      "attr_err": 1.0
+    },
+    "trailer": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": 1.0,
+      "attr_err": 1.0
+    },
+    "construction_vehicle": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": 1.0,
+      "attr_err": 1.0
+    },
+    "pedestrian": {
+      "trans_err": 0.44085718628605197,
+      "scale_err": 0.3207159600788422,
+      "orient_err": 1.5397122967348826,
+      "vel_err": 1.0,
+      "attr_err": 0.037921536198486226
+    },
+    "motorcycle": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": 1.0,
+      "attr_err": 1.0
+    },
+    "bicycle": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": 1.0,
+      "attr_err": 1.0
+    },
+    "traffic_cone": {
+      "trans_err": 0.7796590225752913,
+      "scale_err": 0.553464807114715,
+      "orient_err": NaN,
+      "vel_err": NaN,
+      "attr_err": NaN
+    },
+    "barrier": {
+      "trans_err": 1.0,
+      "scale_err": 1.0,
+      "orient_err": 1.0,
+      "vel_err": NaN,
+      "attr_err": NaN
+    }
+  },
+  "tp_errors": {
+    "trans_err": 0.8814909950532309,
+    "scale_err": 0.7340160791696467,
+    "orient_err": 1.0730460615857211,
+    "vel_err": 1.0,
+    "attr_err": 0.6580137018426219
+  },
+  "tp_scores": {
+    "trans_err": 0.11850900494676908,
+    "scale_err": 0.26598392083035327,
+    "orient_err": 0.0,
+    "vel_err": 0.0,
+    "attr_err": 0.34198629815737813
+  },
+  "nd_score": 0.08350779226251345,
+  "eval_time": 11.796809196472168,
+  "meta": {
+    "use_camera": false,
+    "use_lidar": false,
+    "use_radar": false,
+    "use_map": false,
+    "use_external": false
+  }
+}

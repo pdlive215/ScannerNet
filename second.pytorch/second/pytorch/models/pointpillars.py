@@ -43,8 +43,7 @@ class PFNLayer(nn.Module):
                 eps=1e-3, momentum=0.01)(nn.BatchNorm1d)
             Linear = change_default_args(bias=False)(nn.Linear)
         elif use_switchnorm:
-            BatchNorm1d = change_default_args(
-                eps=1e-3, momentum=0.01)(SwitchNorm1d)
+            BatchNorm1d = SwitchNorm1d
             Linear = change_default_args(bias=False)(nn.Linear)
         else:
             BatchNorm1d = Empty
