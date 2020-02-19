@@ -1,14 +1,66 @@
-Training and validation results after one epoch of training
-
+#TODO
 Selecting model for training with sparse switchable normalization:
 
-The first model is first trained from scratch to show improved performance with pretrained VoxelNet model (296,960 iterations). All other models are pretrained.
+The first model is first trained from scratch (scr) to show improved performance with pretrained VoxelNet model (296,960 iterations). All other models are pretrained (pre).
 
-prec@10: precision at top 10 predictions
-rec@10: recall at top 10 predictions
-mAP: mean average precision
-NDS: nuScenes detection score (see https://www.nuscenes.org/object-detection?externalData=all&mapData=all&modalities=Any)
+prec@10: precision at top 10 predictions (train)
+rec@10: recall at top 10 predictions (train)
+mAP: mean average precision (test)
+NDS: nuScenes detection score (see https://www.nuscenes.org/object-detection)
 
-                      prec@10   rec@10    mAP   NDS
+                        prec@10   rec@10    mAP   NDS
 all.fhd.config (scr)
-all.fhd.
+all.fhd.config (pre)
+all.pp.largea.config
+all.pp.lowa.config
+all.pp.mhead.config
+all.pp.mida.config
+
+Shortcut: quick training runs to identify network performance:
+
+config (steps)          prec@10   rec@10 
+all.fhd (500)           .02969    .1225
+all.fhd (1000)          .02672    .3605
+all.pp.largea (500)     .03673    .3816
+all.pp.largea (1000)    .04477    .5199
+all.pp.lowa (500)       .01748    .4928
+all.pp.lowa (1000)      .02169    .5931
+all.pp.mhead (500)      .001274   .07031
+all.pp.mhead (1000)     .02518    .3577
+all.pp.mida (500)       .02398    .581
+all.pp.mida (1000)      .036      .6737
+
+Switchnorm and sparse switchnorm are implemented with epsilon and momentum equal to that of 1d (switchnorm only) and 2d batchnorm for each subnetwork (VFE, RN, MFE, RPN). Sparse switchnorm is only implemented for 2d normalization. 1d switchnorm is implemented with 2d sparse switchnorm.
+
+Train all.pp.largea (pretrained VoxelNet):
+
+Normalization            Steps(train)  Steps(val)  prec@10   rec@10    mAP    NDS
+SN (SECOND defaults)       5850          --        .09284    .8714     --     --
+SN (SECOND defaults)       11700         --        .1605     .9386     --     --
+SN (SECOND defaults)       17550         --        .2623     .9725     --     --
+SN (SECOND defaults)       23400        23445      .2479     .9729     
+
+
+Train all.pp.mida (pretrained VoxelNet):
+
+                          Steps(train)  Steps(val)  prec@10   rec@10    mAP    NDS
+No norm                    5850          5865       .05842    .7835    .0130  .0832
+No norm                    11700         11730      .07161    .8062    .0211  .0765
+No norm                    17550         17595      .07528    .815     .0217  .0835
+No norm                    23450         23460      .07617    .822     .0247  .0871
+
+Batchnorm                  5850          5865       .1577     .9313    .0223  .0839
+Batchnorm                  11700         11730      .2274     .9602    .0254  .0916
+Batchnorm                  17550         17595      .3263     .9761    .0287  .1003
+Batchnorm                  23450         23460      .4064     .9835    .0300  .0992
+
+SN (SECOND defaults)       5850          5865       .1299     .922     .0170  .0930
+SN (SECOND defaults)       11700         11730      .1966     .9549    .0191  .1083
+SN (SECOND defaults)       17550         17595      .3117     .9772    .0211  .0958
+SN (SECOND defaults)       23450         23460      .3801     .9832    .0228  .0896
+SN (SECOND defaults)       29300         29325      .4949     .9906    .0172  .0845
+
+SN (SN defaults)           5850          5865       .1277     .9223    .0183  .0919
+SN (SN defaults)           11700         11730      .2026     .9573    .0194  .0883
+SN (SN defaults)           17550         17595      .3028     .978     .0230  .0899
+SN (SN defaults)           23450         23460      .3831     .9825    .0179  .0883
