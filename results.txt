@@ -1,22 +1,13 @@
-#TODO
 Selecting model for training with sparse switchable normalization:
 
-The first model is first trained from scratch (scr) to show improved performance with pretrained VoxelNet model (296,960 iterations). All other models are pretrained (pre).
+The parameters for each training run are initialized with a pretrained VoxelNet model (296,960 iterations).
 
 prec@10: precision at top 10 predictions (train)
 rec@10: recall at top 10 predictions (train)
 mAP: mean average precision (test)
 NDS: nuScenes detection score (see https://www.nuscenes.org/object-detection)
 
-                        prec@10   rec@10    mAP   NDS
-all.fhd.config (scr)
-all.fhd.config (pre)
-all.pp.largea.config
-all.pp.lowa.config
-all.pp.mhead.config
-all.pp.mida.config
-
-Shortcut: quick training runs to identify network performance:
+Quick training runs to identify network performance:
 
 config (steps)          prec@10   rec@10 
 all.fhd (500)           .02969    .1225
@@ -31,15 +22,6 @@ all.pp.mida (500)       .02398    .581
 all.pp.mida (1000)      .036      .6737
 
 Switchnorm and sparse switchnorm are implemented with epsilon and momentum equal to that of 1d (switchnorm only) and 2d batchnorm for each subnetwork (VFE, RN, MFE, RPN). Sparse switchnorm is only implemented for 2d normalization. 1d switchnorm is implemented with 2d sparse switchnorm.
-
-Train all.pp.largea (pretrained VoxelNet):
-
-Normalization            Steps(train)  Steps(val)  prec@10   rec@10    mAP    NDS
-SN (SECOND defaults)       5850          --        .09284    .8714     --     --
-SN (SECOND defaults)       11700         --        .1605     .9386     --     --
-SN (SECOND defaults)       17550         --        .2623     .9725     --     --
-SN (SECOND defaults)       23400        23445      .2479     .9729     
-
 
 Train all.pp.mida (pretrained VoxelNet):
 
